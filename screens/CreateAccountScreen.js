@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Button, TextInput } from 'react-native-paper';
 import styled from 'styled-components/native'
+import { UserContext } from '../App';
 
 const CreateAccountScreen = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const setUserData = useContext(UserContext);
 
   const handleSignIn = () => {
-    console.log("sign in")
+    setUserData(true)
   }
   return (
     <Container>

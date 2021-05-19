@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
-import { Text } from 'react-native';
-import { TextInput } from 'react-native-paper';
+import { Button, ProgressBar, TextInput } from 'react-native-paper';
 import styled from 'styled-components/native'
 
 const UploadScreen = () => {
   const [email, setEmail] = useState('');
+
+  const handleImageUpload = () => {
+    console.log("image uploading")
+  }
+  const handleSubmit = () => {
+    console.log("submit")
+  }
   return (
     <Container>
       <Heading>Upload Your Product</Heading>
@@ -31,6 +37,17 @@ const UploadScreen = () => {
         value={email}
         onChangeText={(text) => setEmail(text)}
       />
+      <UploadContainer>
+        <Button mode="contained" color="#34D399"
+          onPress={handleImageUpload}>
+          Upload Image
+        </Button>
+        <UploadProgress progress={0.7} color="#34D399" />
+      </UploadContainer>
+      <Button icon="upload" mode="contained"
+        onPress={handleSubmit}>
+        submit
+      </Button>
     </Container>
   )
 }
@@ -40,11 +57,11 @@ const Container = styled.View`
  flex: 1;
  align-items: center;
  padding: 20px;
+ background-color: white;
 `
 const Heading = styled.Text`
 font-size: 30px;
 color: #7C3AED;
-text-decoration: underline;
 font-weight: bold;
 margin-bottom: 20px;
 `
@@ -56,4 +73,16 @@ const PriceInput = styled(TextInput)`
 margin-bottom:15px;
 width:50%;
 align-self: flex-start;
+`
+const UploadContainer = styled.View`
+flex-direction: row;
+align-items: center;
+align-self: flex-start;
+margin-bottom: 20px;
+`
+const UploadProgress = styled(ProgressBar)`
+width: 190px;
+height: 25px;
+margin-left: 20px;
+
 `

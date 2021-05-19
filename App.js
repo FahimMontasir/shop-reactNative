@@ -1,16 +1,22 @@
-import React from 'react';
+import 'react-native-gesture-handler';
+import React, { createContext, useState } from 'react';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { StatusBar } from 'react-native';
-import CreateAccountScreen from './screens/CreateAccountScreen';
-import HomeScreen from './screens/HomeScreen';
-import LoginScreen from './screens/LoginScreen';
-import UploadScreen from './screens/UploadScreen';
+import { NavigationContainer } from '@react-navigation/native';
+import { BottomTabNavigator, StackNavigator } from './Routes/navigation';
+
+export const UserContext = createContext();
 
 export default function App() {
+  const [userData, setUserData] = useState(false);
   return (
-    <PaperProvider>
-      <StatusBar barStyle="dark-content" backgroundColor="white" />
-      <UploadScreen />
-    </PaperProvider>
+    <UserContext.Provider value={setUserData}>
+      <NavigationContainer>
+        <PaperProvider>
+          <StatusBar barStyle="dark-content" backgroundColor="white" />
+          {userData ? <BottomTabNavigator /> : <StackNavigator />}
+        </PaperProvider>
+      </NavigationContainer>
+    </UserContext.Provider>
   );
 }

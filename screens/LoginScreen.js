@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, TextInput } from 'react-native-paper';
 import styled from 'styled-components/native'
 
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -32,7 +32,7 @@ const LoginScreen = () => {
         Login
       </Button>
       <AppText>don't you have any account?</AppText>
-      <Button mode="default" onPress={console.log("hi")}>
+      <Button mode="default" onPress={() => navigation.navigate("register")}>
         create one..
       </Button>
     </Container>
@@ -44,6 +44,7 @@ const Container = styled.View`
  flex:1;
  align-items:center;
  padding:20px;
+ background-color: white;
 `
 const Logo = styled.Image`
 width:250px;
