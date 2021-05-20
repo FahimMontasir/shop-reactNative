@@ -1,13 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { Platform, Alert, Image } from 'react-native';
+import React, { useEffect } from 'react';
+import { Platform, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import * as FileSystem from 'expo-file-system';
 import { Button } from 'react-native-paper';
 import { storage } from '../backend/firebaseSetup';
 
-export default function AppImagePicker() {
-  const [image, setImage] = useState(null);
-
+export default function AppImagePicker({ setImage }) {
 
   useEffect(() => {
     (async () => {
@@ -28,17 +25,15 @@ export default function AppImagePicker() {
       quality: 0.7,
     });
 
-    console.log(result);
-
     if (!result.cancelled) {
       uploadImage(result.uri, "test")
         .then((url) => {
           setImage(url)
-          console.log("success", url)
         })
-        .catch((error) => console.log("error", error))
+        .catch((error) => Alert.alert("Something went wrong", error))
     }
   };
+
   const uploadImage = async (uri, imageName) => {
     const response = await fetch(uri);
     const blob = response.blob();
@@ -47,13 +42,12 @@ export default function AppImagePicker() {
     const remoteURL = await snapshot.ref.getDownloadURL();
     return remoteURL;
   }
+
   return (
-    <>
-      <Button mode="contained" color="#34D399"
-        onPress={pickImage}>
-        Upload Image
+    <Button mode="contained" color="#34D399"
+      onPress={pickImage}>
+      Upload Image
     </Button>
-      <Image source={{ uri: image }} />
-    </>
+
   );
 }

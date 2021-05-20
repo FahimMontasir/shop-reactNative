@@ -1,15 +1,20 @@
 import React, { useState } from 'react';
+import { useContext } from 'react';
 import { Button, ProgressBar, TextInput } from 'react-native-paper';
 import styled from 'styled-components/native'
+import { UserContext } from '../App';
+import { db } from '../backend/firebaseSetup';
 import AppImagePicker from '../components/AppImagePicker'
 const UploadScreen = () => {
-  const [email, setEmail] = useState('');
+  const [title, setTitle] = useState('');
+  const [price, setPrice] = useState('');
+  const [description, setDescription] = useState('');
+  const [image, setImage] = useState('');
+  const { userData } = useContext(UserContext);
 
-  const handleImageUpload = () => {
-    console.log("image uploading")
-  }
   const handleSubmit = () => {
-    console.log("submit")
+    db.collection("products")
+      .add({ title, price, description, image, email: userData.email })
   }
   return (
     <Container>
@@ -18,15 +23,15 @@ const UploadScreen = () => {
         label="Title"
         mode="outlined"
         placeholder="Enter your product title"
-        value={email}
-        onChangeText={(text) => setEmail(text)}
+        value={title}
+        onChangeText={(text) => setTitle(text)}
       />
       <PriceInput
         label="Price"
         mode="outlined"
         placeholder="product price"
-        value={email}
-        onChangeText={(text) => setEmail(text)}
+        value={price}
+        onChangeText={(text) => setPrice(text)}
       />
       <Input
         label="Description"
@@ -34,11 +39,11 @@ const UploadScreen = () => {
         numberOfLines={5}
         mode="outlined"
         placeholder="Enter your product description"
-        value={email}
-        onChangeText={(text) => setEmail(text)}
+        value={description}
+        onChangeText={(text) => setDescription(text)}
       />
       <UploadContainer>
-        <AppImagePicker />
+        <AppImagePicker setImage={setImage} />
         <UploadProgress progress={0.7} color="#34D399" />
       </UploadContainer>
       <Button icon="upload" mode="contained"

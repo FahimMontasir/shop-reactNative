@@ -1,20 +1,30 @@
 import React from 'react';
+import { useEffect } from 'react';
 import { useState } from 'react';
 import { FlatList } from 'react-native';
 import styled from 'styled-components/native'
+import { db } from '../backend/firebaseSetup';
 import AppCard from '../components/AppCard';
-const DATA = [
-  { id: 1425, productName: "hello product", price: "100", description: "this is really  a good product" },
-  { id: 145, productName: "dj product", price: "00", description: "this is really  a good product" },
-  { id: 45, productName: "Faltu product", price: "1030", description: "this is really  a good product" },
-  { id: 25, productName: "Faltu product", price: "1030", description: "this is really  a good product" },
-  { id: 4253, productName: "Faltu product", price: "1030", description: "this is really  a good product", productImage: "http//www.xyx.com" },
-]
+
 const HomeScreen = () => {
-  const [data, setData] = useState(DATA)
+  const [data, setData] = useState([])
+
+  useEffect(() => {
+    getProducts();
+  }, [])
+
+  const getProducts = () => {
+    db.collection("products").get()
+      .then((snapshot) => {
+        console.log(snapshot.docs)
+        snapshot.docs.map(doc => console.log(doc.data()))
+      })
+  };
+
   const handleRefresh = () => {
-    setData([{ id: 4253, productName: "Faltu product", price: "1030", description: "this is really  a good product", productImage: "http//www.xyx.com" },])
+    getProducts();
   }
+
   return (
     <Container>
       <FlatList

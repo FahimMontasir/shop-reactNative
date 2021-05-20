@@ -1,22 +1,24 @@
-import React from 'react';
-import { useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import { FlatList } from 'react-native';
 import { Avatar, Button, Paragraph, Surface, Title } from 'react-native-paper';
 import styled from 'styled-components/native'
 import { UserContext } from '../App';
+import { db } from '../backend/firebaseSetup';
 import AppCard from '../components/AppCard';
-const DATA = [
-  { id: 1425, productName: "hello product", price: "100", description: "this is really  a good product" },
-  { id: 145, productName: "dj product", price: "00", description: "this is really  a good product" },
-  { id: 45, productName: "Faltu product", price: "1030", description: "this is really  a good product" },
-  { id: 25, productName: "Faltu product", price: "1030", description: "this is really  a good product" },
-  { id: 4253, productName: "Faltu product", price: "1030", description: "this is really  a good product" },
-]
-const AccountScreen = (props) => {
-  const { userData, setUserData } = useContext(UserContext)
+
+const AccountScreen = () => {
+  const { userData, setUserData } = useContext(UserContext);
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    db.collection("products").where("email", "==", userData.email).get()
+      .then((snapshot) => console.log(snapshot.docs))
+  }, []);
+
   const handleLogout = () => {
     setUserData(null)
-  }
+  };
+
   return (
     <Container>
       <ProfileContainer>
@@ -26,7 +28,7 @@ const AccountScreen = (props) => {
       </ProfileContainer>
       <Title>Your added product</Title>
       <FlatList
-        data={DATA}
+        data={products}
         renderItem={({ item }) => (<AppCard deleteIcon id={item.id}
           productName={item.productName} description={item.description}
           price={item.price}
