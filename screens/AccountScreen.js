@@ -8,12 +8,25 @@ import AppCard from '../components/AppCard';
 
 const AccountScreen = () => {
   const { userData, setUserData } = useContext(UserContext);
-  const [products, setProducts] = useState([]);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     db.collection("products").where("email", "==", userData.email).get()
-      .then((snapshot) => console.log(snapshot.docs))
+      .then((snapshot) => {
+        const specificProduct = []
+        snapshot.docs.map(doc => specificProduct.push({ ...doc.data(), id: doc.id }))
+        setData(specificProduct)
+      })
   }, []);
+
+  const handleRefresh = () => {
+    db.collection("products").where("email", "==", userData.email).get()
+      .then((snapshot) => {
+        const specificProduct = []
+        snapshot.docs.map(doc => specificProduct.push({ ...doc.data(), id: doc.id }))
+        setData(specificProduct)
+      })
+  }
 
   const handleLogout = () => {
     setUserData(null)
@@ -28,13 +41,15 @@ const AccountScreen = () => {
       </ProfileContainer>
       <Title>Your added product</Title>
       <FlatList
-        data={products}
+        data={data}
         renderItem={({ item }) => (<AppCard deleteIcon id={item.id}
-          productName={item.productName} description={item.description}
+          productName={item.title} description={item.description}
           price={item.price}
         />)}
         keyExtractor={item => item.id}
         showsVerticalScrollIndicator={false}
+        refreshing={false}
+        onRefresh={handleRefresh}
       />
 
       <LogoutContainer>

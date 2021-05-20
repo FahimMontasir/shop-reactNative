@@ -1,27 +1,28 @@
 import React from 'react';
 import { Avatar, Card, Title, Paragraph, IconButton } from 'react-native-paper';
 import styled from 'styled-components/native';
+import { db } from '../backend/firebaseSetup';
 
 
-const AppCard = ({ id, userName, userImage, productName,
-  description, price, productImage, deleteIcon }) => {
+const AppCard = ({ id, email, productName,
+  description, price, deleteIcon, productImage }) => {
 
   const LeftAvatar = () =>
-    (<Avatar.Image size={45} source={{ uri: userImage }} />)
+    (<Avatar.Image size={45} source={require("../assets/shop.png")} />)
 
   const handleDelete = (id) => {
-    console.log(id)
+    db.collection("products").doc(id).delete()
   }
 
   return (
     <CardContainer>
       {
-        userName && <Card.Title
-          title={userName} subtitle="Top rated seller🔥"
+        email && <Card.Title
+          title={email} subtitle="Top rated seller🔥"
           left={LeftAvatar} />
       }
       {
-        productImage && <Card.Cover source={{ uri: productImage }} />
+        productImage && <Card.Cover source={require("../assets/shop.png")} />
       }
       <Card.Content>
         <Title numberOfLines={1}>{productName}</Title>
