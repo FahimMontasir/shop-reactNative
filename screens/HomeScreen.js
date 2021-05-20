@@ -1,7 +1,7 @@
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { FlatList } from 'react-native';
+import { Alert, Button, FlatList } from 'react-native';
 import styled from 'styled-components/native'
 import { db } from '../backend/firebaseSetup';
 import AppCard from '../components/AppCard';
@@ -10,15 +10,19 @@ const HomeScreen = () => {
   const [data, setData] = useState([])
 
   useEffect(() => {
-    getProducts();
+    const unsubscribe = db.collection("products").get()
+      .then((snapshot) => {
+        const user = [];
+        snapshot.docs.map(doc => user.unshift({ ...doc.data(), id: doc.id }))
+        setData(user)
+      })
+      .catch(err => Alert.alert("didn't get data", err))
+    return unsubscribe;
   }, [])
 
   const getProducts = () => {
-    db.collection("products").get()
-      .then((snapshot) => {
-        console.log(snapshot.docs)
-        snapshot.docs.map(doc => console.log(doc.data()))
-      })
+
+    console.log(data)
   };
 
   const handleRefresh = () => {
@@ -27,6 +31,7 @@ const HomeScreen = () => {
 
   return (
     <Container>
+      <Button title="click me" onPress={handleRefresh} />
       <FlatList
         data={data}
         renderItem={({ item }) =>

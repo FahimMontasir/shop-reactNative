@@ -43,6 +43,7 @@ const UploadScreen = () => {
         onChangeText={(text) => setDescription(text)}
       />
       <UploadContainer>
+        {/* have to work more with this feature */}
         <AppImagePicker setImage={setImage} />
         <UploadProgress progress={0.7} color="#34D399" />
       </UploadContainer>
