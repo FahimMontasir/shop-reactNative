@@ -1,6 +1,6 @@
 import React from 'react';
 import { Avatar, Card, Title, Paragraph, IconButton } from 'react-native-paper';
-import styled from 'styled-components';
+import styled from 'styled-components/native';
 
 
 const AppCard = ({ id, userName, userImage, productName,

@@ -1,7 +1,9 @@
 import React from 'react';
+import { useContext } from 'react';
 import { FlatList } from 'react-native';
 import { Avatar, Button, Paragraph, Surface, Title } from 'react-native-paper';
 import styled from 'styled-components/native'
+import { UserContext } from '../App';
 import AppCard from '../components/AppCard';
 const DATA = [
   { id: 1425, productName: "hello product", price: "100", description: "this is really  a good product" },
@@ -11,14 +13,15 @@ const DATA = [
   { id: 4253, productName: "Faltu product", price: "1030", description: "this is really  a good product" },
 ]
 const AccountScreen = (props) => {
+  const { userData, setUserData } = useContext(UserContext)
   const handleLogout = () => {
-    console.log('logout')
+    setUserData(null)
   }
   return (
     <Container>
       <ProfileContainer>
         <Avatar.Image size={100} source={require('../assets/shop.png')} />
-        <Title>Fahim Montasir</Title>
+        <Title>{userData.email}</Title>
         <Paragraph>Top rated seller🔥</Paragraph>
       </ProfileContainer>
       <Title>Your added product</Title>

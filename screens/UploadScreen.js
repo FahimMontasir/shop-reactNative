@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, ProgressBar, TextInput } from 'react-native-paper';
 import styled from 'styled-components/native'
-
+import AppImagePicker from '../components/AppImagePicker'
 const UploadScreen = () => {
   const [email, setEmail] = useState('');
 
@@ -38,10 +38,7 @@ const UploadScreen = () => {
         onChangeText={(text) => setEmail(text)}
       />
       <UploadContainer>
-        <Button mode="contained" color="#34D399"
-          onPress={handleImageUpload}>
-          Upload Image
-        </Button>
+        <AppImagePicker />
         <UploadProgress progress={0.7} color="#34D399" />
       </UploadContainer>
       <Button icon="upload" mode="contained"

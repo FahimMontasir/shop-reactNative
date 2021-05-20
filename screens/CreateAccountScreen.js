@@ -1,26 +1,26 @@
 import React, { useState, useContext } from 'react';
+import { Alert } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import styled from 'styled-components/native'
 import { UserContext } from '../App';
+import { auth } from '../backend/firebaseSetup';
 
 const CreateAccountScreen = () => {
-  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const setUserData = useContext(UserContext);
+  const { setUserData } = useContext(UserContext);
 
   const handleSignIn = () => {
-    setUserData(true)
+
+    auth.createUserWithEmailAndPassword(email, password)
+      .then((credential) => {
+        setUserData(credential.user)
+      })
+      .catch(error => Alert.alert("Something went wrong", error.message))
   }
   return (
     <Container>
       <AppText>Provide your information</AppText>
-      <Input
-        label="Name"
-        placeholder="Enter your name"
-        value={name}
-        onChangeText={(text) => setName(text)}
-      />
       <Input
         label="Email"
         placeholder="Enter your email"

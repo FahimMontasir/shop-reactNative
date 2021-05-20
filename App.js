@@ -8,9 +8,9 @@ import { BottomTabNavigator, StackNavigator } from './Routes/navigation';
 export const UserContext = createContext();
 
 export default function App() {
-  const [userData, setUserData] = useState(false);
+  const [userData, setUserData] = useState();
   return (
-    <UserContext.Provider value={setUserData}>
+    <UserContext.Provider value={{ userData, setUserData }}>
       <NavigationContainer>
         <PaperProvider>
           <StatusBar barStyle="dark-content" backgroundColor="white" />
@@ -19,4 +19,4 @@ export default function App() {
       </NavigationContainer>
     </UserContext.Provider>
   );
-}
+};

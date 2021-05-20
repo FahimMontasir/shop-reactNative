@@ -1,14 +1,24 @@
 import React, { useState } from 'react';
+import { useContext } from 'react';
+import { Alert } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import styled from 'styled-components/native'
+import { UserContext } from '../App';
+import { auth } from '../backend/firebaseSetup';
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { setUserData } = useContext(UserContext)
 
   const handleLogin = () => {
-    console.log("login")
+    auth.signInWithEmailAndPassword(email, password)
+      .then(credential => {
+        setUserData(credential.user)
+      })
+      .catch(error => Alert.alert("Something went wrong", error.message))
   }
+
   return (
     <Container>
       <Logo source={require("../assets/shop.png")} />
